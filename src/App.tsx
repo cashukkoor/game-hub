@@ -7,12 +7,15 @@ import { Genre } from "./hooks/useGenres";
 import PlatformSelector from "./components/PlatformSelector";
 import { Platform } from "./hooks/useGames";
 import SortSelector from "./components/SortSelector";
+import GameHeading from "./components/GameHeading";
+import SearchInput from "./components/SearchInput";
 
 export interface GameQuery {
   genre: Genre | null;
   platform: Platform | null;
   sortOrder: string;
   searchText: string;
+  heading: string;
 }
 function App() {
   const [gameQuary, setGameQuary] = useState<GameQuery>({} as GameQuery);
@@ -35,22 +38,25 @@ function App() {
         </GridItem>
       </Show>
       <GridItem area="main">
-        <Flex paddingLeft={2} marginBottom={5}>
-          <Box marginRight={5}>
-            <PlatformSelector
-              selectedPlatform={gameQuary.platform}
-              onSelectedPlatform={(platform) =>
-                setGameQuary({ ...gameQuary, platform })
+        <Box paddingLeft={2}>
+          <GameHeading gameQuery={gameQuary} />
+          <Flex marginBottom={5}>
+            <Box marginRight={5}>
+              <PlatformSelector
+                selectedPlatform={gameQuary.platform}
+                onSelectedPlatform={(platform) =>
+                  setGameQuary({ ...gameQuary, platform })
+                }
+              />
+            </Box>
+            <SortSelector
+              sortOrder={gameQuary.sortOrder}
+              onSelectSortOrder={(sortOrder) =>
+                setGameQuary({ ...gameQuary, sortOrder })
               }
             />
-          </Box>
-          <SortSelector
-            sortOrder={gameQuary.sortOrder}
-            onSelectSortOrder={(sortOrder) =>
-              setGameQuary({ ...gameQuary, sortOrder })
-            }
-          />
-        </Flex>
+          </Flex>
+        </Box>
         <GameGrid gameQuery={gameQuary}></GameGrid>
       </GridItem>
     </Grid>
